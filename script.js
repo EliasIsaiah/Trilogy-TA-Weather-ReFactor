@@ -1,7 +1,7 @@
-const apiKey = "6d631d9903c32e6ee9bacd581b66a320";
+const API_KEY = "6d631d9903c32e6ee9bacd581b66a320";
+
 $(document).ready(function () {
   $("#search-button").on("click", function () {
-
 
     var searchValue = $("#search-value").val();
 
@@ -14,28 +14,14 @@ $(document).ready(function () {
 
       makeRow(searchValue);
     }
-    
-    getWeatherData(searchValue, "weather").then((weatherData) => {
-      buildWeatherDOM(weatherData);
-    })
-      .then(() => {
-        getWeatherData(searchValue, "forecast").then((weatherData) => {
-          buildFiveDayWeatherDOM(weatherData);
-        })
-      })
+
+    getWeather(searchValue);
   });
-  
+
 
   $(".history").on("click", "li", function () {
     let searchValue = $(this).text();
-    getWeatherData(searchValue, "weather").then((weatherData) => {
-      buildWeatherDOM(weatherData);
-    })
-      .then(() => {
-        getWeatherData(searchValue, "forecast").then((weatherData) => {
-          buildFiveDayWeatherDOM(weatherData);
-        })
-      })
+    getWeather(searchValue);
   });
 
   function makeRow(text) {
@@ -103,28 +89,11 @@ $(document).ready(function () {
     })
   }
 
-
-  // async function getWeatherData(searchValue, forecastOrCurrentWeather) {
-  //   let weatherData;
-
-  //   try {
-  //     weatherData = await $.ajax({
-  //       type: "GET",
-  //       url: `http://api.openweathermap.org/data/2.5/${forecastOrCurrentWeather}?q=${searchValue}&appid=${apiKey}&units=imperial`,
-  //       dataType: "json"
-  //     });
-
-  //     return weatherData
-  //   } catch(error) {
-  //     console.error(error);
-  //   }
-  // }
-
   function getWeatherData(searchValue, forecastOrCurrentWeather) {
     return new Promise((resolve, reject) => {
       $.ajax({
         type: "GET",
-        url: `http://api.openweathermap.org/data/2.5/${forecastOrCurrentWeather}?q=${searchValue}&appid=${apiKey}&units=imperial`,
+        url: `http://api.openweathermap.org/data/2.5/${forecastOrCurrentWeather}?q=${searchValue}&appid=${API_KEY}&units=imperial`,
         dataType: "json"
       }).then((weatherData) => { //this is the same as function(weatherdata) {}
         resolve(weatherData); //buildWeatherDOM(weatherData, searchValue);
@@ -134,10 +103,21 @@ $(document).ready(function () {
     })
   }
 
+  function getWeather(searchValue) {
+    getWeatherData(searchValue, "weather").then((weatherData) => {
+      buildWeatherDOM(weatherData);
+    })
+      .then(() => {
+        getWeatherData(searchValue, "forecast").then((weatherData) => {
+          buildFiveDayWeatherDOM(weatherData);
+        })
+      })
+  }
+
   function getUVIndex(lat, lon) {
     $.ajax({
       type: "GET",
-      url: `http://api.openweathermap.org/data/2.5/uvi?appid=${apiKey}&lat=${lat}&lon=${lon}`,
+      url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${lat}&lon=${lon}`,
       dataType: "json",
       success: function (data) {
         var uv = $("<p>").text("UV Index: ");
@@ -163,14 +143,7 @@ $(document).ready(function () {
   var history = JSON.parse(window.localStorage.getItem("history")) || [];
 
   if (history.length > 0) {
-    getWeatherData(history[history.length - 1], "weather").then((weatherData) => {
-      buildWeatherDOM(weatherData);
-    })
-      .then(() => {
-        getWeatherData(history[history.length - 1], "forecast").then((weatherData) => {
-          buildFiveDayWeatherDOM(weatherData);
-        })
-      })
+    getWeather(history[history.length - 1])
   }
 
   for (var i = 0; i < history.length; i++) {
