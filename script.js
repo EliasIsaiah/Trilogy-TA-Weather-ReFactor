@@ -7,7 +7,8 @@ $(document).ready(function () {
 
     // clear input box
     $("#search-value").val("");
-
+    
+    //if it's a new search add it to the history
     if (history.indexOf(searchValue) === -1) {
       history.push(searchValue);
       window.localStorage.setItem("history", JSON.stringify(history));
