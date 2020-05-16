@@ -70,7 +70,7 @@ $(document).ready(function () {
     // loop over all forecasts (by 3-hour increments)
     weatherData.list.map((weatherData) => {
       // only look at forecasts around 3:00pm
-      if (weatherData.dt_txt.indexOf("15:00:00") !== -1) {
+      if (weatherData.dt_txt.indexOf("15:00:00") !== -1) { //if the current weatherData Object is for 3:00pm
         // create html elements for a bootstrap card
         let col = $("<div>").addClass("col-md-2");
         let card = $("<div>").addClass("card bg-primary text-white");
