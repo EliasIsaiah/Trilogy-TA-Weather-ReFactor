@@ -3,7 +3,7 @@ const API_KEY = "6d631d9903c32e6ee9bacd581b66a320";
 $(document).ready(function () {
   $("#search-button").on("click", function () {
 
-    var searchValue = $("#search-value").val();
+    let searchValue = $("#search-value").val();
 
     // clear input box
     $("#search-value").val("");
@@ -26,7 +26,7 @@ $(document).ready(function () {
   });
 
   function makeRow(text) {
-    var li = $("<li>").addClass("list-group-item list-group-item-action").text(text);
+    let li = $("<li>").addClass("list-group-item list-group-item-action").text(text);
     $(".history").append(li);
   }
 
@@ -42,13 +42,13 @@ $(document).ready(function () {
     let temperatureString = `Temperature: ${weatherData.main.temp}°F`
     let imgURL = `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`
 
-    var title = $("<h3>").addClass("card-title").text(nameDateString);
-    var card = $("<div>").addClass("card");
-    var wind = $("<p>").addClass("card-text").text(windSpeedString);
-    var humid = $("<p>").addClass("card-text").text(humidityString)
-    var temp = $("<p>").addClass("card-text").text(temperatureString);
-    var cardBody = $("<div>").addClass("card-body");
-    var img = $("<img>").attr("src", imgURL);
+    let title = $("<h3>").addClass("card-title").text(nameDateString);
+    let card = $("<div>").addClass("card");
+    let wind = $("<p>").addClass("card-text").text(windSpeedString);
+    let humid = $("<p>").addClass("card-text").text(humidityString)
+    let temp = $("<p>").addClass("card-text").text(temperatureString);
+    let cardBody = $("<div>").addClass("card-body");
+    let img = $("<img>").attr("src", imgURL);
 
     // merge and add to page
     title.append(img);
@@ -72,16 +72,16 @@ $(document).ready(function () {
       // only look at forecasts around 3:00pm
       if (weatherData.dt_txt.indexOf("15:00:00") !== -1) {
         // create html elements for a bootstrap card
-        var col = $("<div>").addClass("col-md-2");
-        var card = $("<div>").addClass("card bg-primary text-white");
-        var body = $("<div>").addClass("card-body p-2");
+        let col = $("<div>").addClass("col-md-2");
+        let card = $("<div>").addClass("card bg-primary text-white");
+        let body = $("<div>").addClass("card-body p-2");
 
-        var title = $("<h5>").addClass("card-title").text(new Date(weatherData.dt_txt).toLocaleDateString());
+        let title = $("<h5>").addClass("card-title").text(new Date(weatherData.dt_txt).toLocaleDateString());
 
-        var img = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`);
+        let img = $("<img>").attr("src", `http://openweathermap.org/img/w/${weatherData.weather[0].icon}.png`);
 
-        var p1 = $("<p>").addClass("card-text").text(`Temp: ${weatherData.main.temp_max} °F`);
-        var p2 = $("<p>").addClass("card-text").text(`Humidity: ${weatherData.main.humidity}%`);
+        let p1 = $("<p>").addClass("card-text").text(`Temp: ${weatherData.main.temp_max} °F`);
+        let p2 = $("<p>").addClass("card-text").text(`Humidity: ${weatherData.main.humidity}%`);
 
         // merge together and put on page
         col.append(card.append(body.append(title, img, p1, p2)));
@@ -121,8 +121,8 @@ $(document).ready(function () {
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${lat}&lon=${lon}`,
       dataType: "json",
       success: function (data) {
-        var uv = $("<p>").text("UV Index: ");
-        var btn = $("<span>").addClass("btn btn-sm").text(data.value);
+        let uv = $("<p>").text("UV Index: ");
+        let btn = $("<span>").addClass("btn btn-sm").text(data.value);
 
         // change color depending on uv value
         if (data.value < 3) {
@@ -141,13 +141,13 @@ $(document).ready(function () {
   }
 
   // get current history, if any
-  var history = JSON.parse(window.localStorage.getItem("history")) || [];
+  let history = JSON.parse(window.localStorage.getItem("history")) || [];
 
   if (history.length > 0) {
     getWeather(history[history.length - 1])
   }
 
-  for (var i = 0; i < history.length; i++) {
+  for (let i = 0; i < history.length; i++) {
     makeRow(history[i]);
   }
 });
