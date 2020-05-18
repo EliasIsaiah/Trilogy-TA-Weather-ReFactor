@@ -24,8 +24,9 @@ $(document).ready(function () {
     let searchValue = $(this).text();
     getWeather(searchValue);
   });
-
-  $(document).on("click", "ul.searchHistory button", function () {
+  
+  //this is bonus functionality, not required
+  $(document).on("click", "ul.searchHistory button", function () { 
     let cityToDelete = $(this).attr("data-city"); //get the selected city
     removeFromHistory(cityToDelete);
     $(this).parent().remove();
