@@ -127,38 +127,29 @@ $(document).ready(function () {
     getWeatherData(searchValue, "forecast").then((weatherData) => {
       buildFiveDayWeatherDOM(weatherData);
     })
-    // getWeatherData(searchValue, "weather").then((weatherData) => {
-    //   buildWeatherDOM(weatherData);
-    // })
-    //   .then(() => {
-    //     getWeatherData(searchValue, "forecast").then((weatherData) => {
-    //       buildFiveDayWeatherDOM(weatherData);
-    //     })
-    //   })
   }
 
   function getUVIndex(lat, lon) {
     $.ajax({
       type: "GET",
       url: `http://api.openweathermap.org/data/2.5/uvi?appid=${API_KEY}&lat=${lat}&lon=${lon}`,
-      dataType: "json",
-      success: function (data) {
-        let uv = $("<p>").text("UV Index: ");
-        let btn = $("<span>").addClass("btn btn-sm").text(data.value);
-
-        // change color depending on uv value
-        if (data.value < 3) {
-          btn.addClass("btn-success");
-        }
-        else if (data.value < 7) {
-          btn.addClass("btn-warning");
-        }
-        else {
-          btn.addClass("btn-danger");
-        }
-
-        $("#today .card-body").append(uv.append(btn));
+      dataType: "json"
+    }).then((data)=> {
+      let uv = $("<p>").text("UV Index: ");
+      let btn = $("<span>").addClass("btn btn-sm").text(data.value);
+  
+      // change color depending on uv value
+      if (data.value < 3) {
+        btn.addClass("btn-success");
       }
+      else if (data.value < 7) {
+        btn.addClass("btn-warning");
+      }
+      else {
+        btn.addClass("btn-danger");
+      }
+  
+      $("#today .card-body").append(uv.append(btn));
     });
   }
 
