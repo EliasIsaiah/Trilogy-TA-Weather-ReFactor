@@ -7,7 +7,7 @@ $(document).ready(function () {
 
     // clear input box
     $("#search-value").val("");
-    
+
     //if it's a new search add it to the history
     if (history.indexOf(searchValue) === -1) {
       history.push(searchValue);
@@ -20,14 +20,29 @@ $(document).ready(function () {
   });
 
 
-  $(".history").on("click", "li", function () {
+  $(document).on("click", "ul.searchHistory li.history", function () {
     let searchValue = $(this).text();
     getWeather(searchValue);
   });
 
+  $(document).on("click", "ul.searchHistory button", function () {
+    let cityToDelete = $(this).attr("data-city"); //get the selected city
+    removeFromHistory(cityToDelete);
+    $(this).parent().remove();
+  })
+
+  function removeFromHistory(selectedCity) {
+    let oldHistory = JSON.parse(window.localStorage.getItem("history")) || [];
+    history = oldHistory.filter((city) => { return city !== selectedCity });
+    window.localStorage.setItem("history", JSON.stringify(history));
+  }
+
   function makeRow(text) {
-    let li = $("<li>").addClass("list-group-item list-group-item-action").text(text);
-    $(".history").append(li);
+    let row = $("<div>").addClass("row mb-1");
+    let li = $("<li>").addClass("col-10 mr-auto list-group-item list-group-item-action history").text(text);
+    let delButton = $("<button>").attr("class", "col-2 btn btn-danger btn-sm deleteBtn").attr("data-city", text).text("Delete");
+
+    $(".searchHistory").append(row.append(li).append(delButton));
   }
 
   function buildWeatherDOM(weatherData) {
@@ -108,11 +123,17 @@ $(document).ready(function () {
     getWeatherData(searchValue, "weather").then((weatherData) => {
       buildWeatherDOM(weatherData);
     })
-      .then(() => {
-        getWeatherData(searchValue, "forecast").then((weatherData) => {
-          buildFiveDayWeatherDOM(weatherData);
-        })
-      })
+    getWeatherData(searchValue, "forecast").then((weatherData) => {
+      buildFiveDayWeatherDOM(weatherData);
+    })
+    // getWeatherData(searchValue, "weather").then((weatherData) => {
+    //   buildWeatherDOM(weatherData);
+    // })
+    //   .then(() => {
+    //     getWeatherData(searchValue, "forecast").then((weatherData) => {
+    //       buildFiveDayWeatherDOM(weatherData);
+    //     })
+    //   })
   }
 
   function getUVIndex(lat, lon) {
