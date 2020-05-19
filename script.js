@@ -51,7 +51,6 @@ $(document).ready(function () {
     $forecastTitleH4 = $("<h4>").addClass("mt-3");
     $forecastTitleH4.text("5-Day Forecast:")
     $newRow = $("<div>").addClass("row");
-    // $("#forecast").html(`<h4 class="mt-3">5-Day Forecast:</h4>").append("<div class="row">`);
     $("#forecast").empty()
     .append($forecastTitleH4, $newRow);
     
